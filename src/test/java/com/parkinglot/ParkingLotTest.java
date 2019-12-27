@@ -8,6 +8,7 @@ public class ParkingLotTest {
     ParkingLotSystem parkingLotSystem;
     Object vehicle;
     ParkingLotOwner owner;
+    AirportSecurity security = new AirportSecurity();
 
     @Before
     public void setUp() throws Exception {
@@ -83,6 +84,23 @@ public class ParkingLotTest {
         }
         asd = owner.isParkingLotFull();
         Assert.assertTrue(asd);
+    }
+
+    @Test
+    public void givenParkingLot_WhenParkingLotGetFull_ShouldInformAirportSecurity() {
+        Boolean asd;
+        try {
+            parkingLotSystem.RegisterOwner(owner);
+            parkingLotSystem.RegisterAirportSecurity(security);
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(vehicle);
+            asd = owner.isParkingLotFull();
+            parkingLotSystem.park(vehicle);
+        } catch (ParkingLotException e) {
+        }
+        asd = owner.isParkingLotFull();
+        boolean asdf = security.isParkingLotFull();
+        Assert.assertTrue(asd && asdf);
     }
 
 }

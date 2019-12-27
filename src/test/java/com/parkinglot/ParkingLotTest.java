@@ -10,36 +10,69 @@ public class ParkingLotTest {
 
     @Before
     public void setUp() throws Exception {
-        parkingLotSystem = new ParkingLotSystem();
+        parkingLotSystem = new ParkingLotSystem(2);
         vehicle = new Object();
     }
 
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldReturnTrue() {
-        boolean isVehicleParked = parkingLotSystem.park(new Object());
-        Assert.assertTrue(isVehicleParked);
+        try {
+            boolean isVehicleParked = parkingLotSystem.park(new Object());
+            Assert.assertTrue(isVehicleParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldUnparked() {
+        try {
         parkingLotSystem.park(vehicle);
-        boolean isVehicleParked = parkingLotSystem.unPark(vehicle);
+        boolean isVehicleParked = false;
+        isVehicleParked = parkingLotSystem.unPark(vehicle);
         Assert.assertTrue(isVehicleParked);
+        } catch (ParkingLotException e) {
+
+        }
+
     }
 
     @Test
     public void givenParkingLot_WhenVehicleIsNotParked_shouldReturnFalse() {
-        boolean isVehicleParked = parkingLotSystem.unPark(vehicle);
-        Assert.assertFalse(isVehicleParked);
-    }
+        try {
+        boolean isVehicleParked = false;
+        isVehicleParked = parkingLotSystem.unPark(vehicle);
+            } catch (ParkingLotException e) {
+            Assert.assertEquals(e.getMessage(),"Such Type Vehicle Not Found");
+
+            }
+
+        }
 
     @Test
     public void givenParkingLot_WhenAttemptToUnparkDifferentVehicle_shouldReturnFalse() {
+        try {
         parkingLotSystem.park(vehicle);
-        boolean isVehicleParked = parkingLotSystem.unPark(new Object());
-        Assert.assertFalse(isVehicleParked);
+        boolean isVehicleParked = false;
+        isVehicleParked = parkingLotSystem.unPark(new Object());
+        } catch (ParkingLotException e) {
+            Assert.assertEquals( "Such Type Vehicle Not Found",e.getMessage());
+        }
+
     }
 
+    @Test
+    public void givenParkingLot_WhenParkingLotGetFull_ShouldThrowException() {
+        try {
+            parkingLotSystem.park(vehicle);
+            Object vehicle2 = new Object();
+            parkingLotSystem.park(vehicle2);
+            parkingLotSystem.park(new Object());
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Parking lot is full" , e.getMessage() );
+        }
+    }
 
 
 }

@@ -8,10 +8,12 @@ public class ParkingLotSystem {
     private Object vehicle;
     private int currentParkingLotSize;
     List<ParkingLotObserver> parkingLotObserver;
+    private List<Object> vehicles;
 
     public ParkingLotSystem(int parkingLotCapacity) {
         this.parkingLotCapacity = parkingLotCapacity;
         parkingLotObserver = new ArrayList();
+        vehicles = new ArrayList<>();
     }
 
      public void RegisterObserver(ParkingLotObserver owner) {
@@ -24,16 +26,18 @@ public class ParkingLotSystem {
                 observer.parkingLotIsFull();
             throw new ParkingLotException("Parking lot is full");
         }
-        this.vehicle = vehicle;
+        vehicles.add(vehicle);
         currentParkingLotSize++;
         return true;
     }
 
-    public boolean unPark(Object vehicle) throws ParkingLotException {
-        if (this.vehicle != null && this.vehicle.equals(vehicle)) {
-            this.vehicle = null;
-            return true;
+    public boolean unPark(Object vehicle) {
+        if (vehicle == null ) return false;
+        if (vehicles.contains(vehicle)) {
+            vehicles.remove(vehicle);
+            for ( ParkingLotObserver observer : parkingLotObserver )
+                observer.parkingLotIsEmpty();
         }
-        throw new ParkingLotException("Such Type Vehicle Not Found");
+        return true;
     }
 }

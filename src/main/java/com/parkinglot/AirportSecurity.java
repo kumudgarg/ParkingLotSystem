@@ -9,7 +9,14 @@ public class AirportSecurity implements ParkingLotObserver{
         return parkingLotIsFull;
     }
 
+    @Override
     public void parkingLotIsFull() {
         parkingLotIsFull = true;
     }
+
+    @Override
+    public void parkingLotIsEmpty() {
+        parkingLotIsFull = false;
+    }
+
 }

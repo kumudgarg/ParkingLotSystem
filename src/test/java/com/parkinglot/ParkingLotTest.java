@@ -5,10 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ParkingLotTest {
+
     ParkingLotSystem parkingLotSystem;
     Object vehicle;
     ParkingLotOwner owner;
     AirportSecurity security = new AirportSecurity();
+
 
     @Before
     public void setUp() throws Exception {
@@ -40,12 +42,8 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenVehicleIsNotParked_shouldReturnFalse() {
-        try {
-            boolean isVehicleParked = false;
-            isVehicleParked = parkingLotSystem.unPark(vehicle);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals(e.getMessage(), "Such Type Vehicle Not Found");
-        }
+        boolean isVehicleParked = false;
+        isVehicleParked = parkingLotSystem.unPark(vehicle);
     }
 
     @Test
@@ -98,5 +96,20 @@ public class ParkingLotTest {
             Assert.assertTrue(lotFull);
         }
     }
+
+    @Test
+    public void givenParkingLot_WhenParkingLotGetEmptyAfterFull_ShouldInformOwner() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(new Object());
+            parkingLotSystem.park(new Object());
+        } catch (ParkingLotException e) {
+        }
+        parkingLotSystem.unPark(vehicle);
+        boolean lotFull = owner.isParkingLotEmpty();
+        Assert.assertFalse(lotFull);
+    }
+
 
 }

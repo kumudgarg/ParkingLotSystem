@@ -1,11 +1,11 @@
 package com.parkinglot;
 
-public class ParkingLotOwner {
+public class ParkingLotOwner implements ParkingLotObserver{
 
-    private boolean parkingLotIsFull;
+    private Boolean parkingLotIsFull;
 
 
-    public boolean isParkingLotFull() {
+    public Boolean isParkingLotFull() {
         return parkingLotIsFull;
     }
 

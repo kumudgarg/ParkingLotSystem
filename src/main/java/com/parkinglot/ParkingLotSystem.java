@@ -1,29 +1,27 @@
 package com.parkinglot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParkingLotSystem {
     private int parkingLotCapacity;
     private Object vehicle;
     private int currentParkingLotSize;
-    ParkingLotOwner owner;
-    private AirportSecurity security;
-
+    List<ParkingLotObserver> parkingLotObserver;
 
     public ParkingLotSystem(int parkingLotCapacity) {
         this.parkingLotCapacity = parkingLotCapacity;
+        parkingLotObserver = new ArrayList();
     }
 
-    public void RegisterOwner(ParkingLotOwner owner) {
-        this.owner = owner;
-    }
-
-    public void RegisterAirportSecurity(AirportSecurity security) {
-        this.security = security;
+     public void RegisterObserver(ParkingLotObserver owner) {
+        parkingLotObserver.add(owner);
     }
 
     public boolean park(Object vehicle) throws ParkingLotException {
         if (this.currentParkingLotSize == this.parkingLotCapacity) {
-            owner.parkingLotIsFull();
-            security.parkingLotIsFull();
+            for ( ParkingLotObserver observer : parkingLotObserver )
+                observer.parkingLotIsFull();
             throw new ParkingLotException("Parking lot is full");
         }
         this.vehicle = vehicle;

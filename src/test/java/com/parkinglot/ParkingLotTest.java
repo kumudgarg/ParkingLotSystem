@@ -73,34 +73,30 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformOwner() {
-        Boolean asd;
+        Boolean lotFull;
         try {
-            parkingLotSystem.RegisterOwner(owner);
+            parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(vehicle);
-            asd = owner.isParkingLotFull();
+            lotFull = owner.isParkingLotFull();
             parkingLotSystem.park(vehicle);
         } catch (ParkingLotException e) {
+            lotFull = owner.isParkingLotFull();
+            Assert.assertTrue(lotFull);
         }
-        asd = owner.isParkingLotFull();
-        Assert.assertTrue(asd);
     }
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformAirportSecurity() {
-        Boolean asd;
         try {
-            parkingLotSystem.RegisterOwner(owner);
-            parkingLotSystem.RegisterAirportSecurity(security);
+            parkingLotSystem.RegisterObserver(security);
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(vehicle);
-            asd = owner.isParkingLotFull();
             parkingLotSystem.park(vehicle);
         } catch (ParkingLotException e) {
+            boolean lotFull = security.isParkingLotFull();
+            Assert.assertTrue(lotFull);
         }
-        asd = owner.isParkingLotFull();
-        boolean asdf = security.isParkingLotFull();
-        Assert.assertTrue(asd && asdf);
     }
 
 }

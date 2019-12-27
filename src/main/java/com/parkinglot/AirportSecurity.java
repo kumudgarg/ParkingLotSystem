@@ -1,6 +1,6 @@
 package com.parkinglot;
 
-public class AirportSecurity {
+public class AirportSecurity implements ParkingLotObserver{
 
     private Boolean parkingLotIsFull;
 

@@ -111,5 +111,68 @@ public class ParkingLotTest {
         Assert.assertFalse(lotFull);
     }
 
+    @Test
+    public void givenParkingLot_HavingAttendant_shouldBeAbleToParkCar() {
+        try {
+
+            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
+            Assert.assertEquals(parkingLotAttendant,parkingLotAttendant);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenParkingLot_HavingAttendant_shouldBeAbleToParkInDecidedSlot() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
+            ParkingLotAttendant attendant = parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
+            Assert.assertEquals(attendant,parkingLotAttendant);
+        } catch (ParkingLotException e) {
+        }
+    }
+
+    @Test
+    public void givenParkingLot_HavingAttendant_WhenParkingLotFullShouldThrowException() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
+            ParkingLotAttendant parkingLotAttendant2 = new ParkingLotAttendant(vehicle);
+            ParkingLotAttendant parkingLotAttendant3 = new ParkingLotAttendant(vehicle);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant2);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant3);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Parking lot is full", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLot_ifParkedVehicleHaveSameVehicle_ShouldReturnVehicleAttendant() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
+            ParkingLotAttendant myVehicleAttendant = parkingLotSystem.getMyVehicle(parkingLotAttendant);
+            Assert.assertEquals(parkingLotAttendant,myVehicleAttendant);
+        } catch (ParkingLotException e) {
+        }
+    }
+
+    @Test
+    public void givenParkingLot_IfAttendantNotHaveParkedVehicle_ShouldCatchException() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
+            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
+            ParkingLotAttendant myVehicleAttendant = parkingLotSystem.getMyVehicle(new ParkingLotAttendant(new Object()));
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Such Type of Attendant Not Found", e.getMessage());
+
+        }
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.parkinglot;
 public class ParkingLotOwner implements ParkingLotObserver{
 
     private Boolean parkingLotIsFull;
+    private int count = 0;
 
 
     public Boolean isParkingLotFull() {
@@ -22,4 +23,12 @@ public class ParkingLotOwner implements ParkingLotObserver{
     public Boolean isParkingLotEmpty() {
         return parkingLotIsFull;
     }
+
+    public int getParkingSlot() {
+        return count++;
+    }
+
+//    public ParkingLotAttendant getParkingLoAttendent(ParkingLotAttendant parkingLotAttendant) {
+//        return parkingLotAttendant;  }
+
 }

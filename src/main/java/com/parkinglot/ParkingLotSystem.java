@@ -1,14 +1,16 @@
 package com.parkinglot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 
 public class ParkingLotSystem {
     private int parkingLotCapacity;
-    private Object vehicle;
-    private int currentParkingLotSize;
     List<ParkingLotObserver> parkingLotObserver;
     private List<Object> vehicles;
+    Map<Integer,Object> vehicleSlotMap = new HashMap<>();
 
     public ParkingLotSystem(int parkingLotCapacity) {
         this.parkingLotCapacity = parkingLotCapacity;
@@ -21,15 +23,26 @@ public class ParkingLotSystem {
     }
 
     public boolean park(Object vehicle) throws ParkingLotException {
-        if (this.currentParkingLotSize == this.parkingLotCapacity) {
+        if (this.vehicles.size() == this.parkingLotCapacity) {
             for ( ParkingLotObserver observer : parkingLotObserver )
                 observer.parkingLotIsFull();
             throw new ParkingLotException("Parking lot is full");
         }
         vehicles.add(vehicle);
-        currentParkingLotSize++;
         return true;
     }
+
+
+    private void park(int slot, Object vehicle) throws ParkingLotException {
+        if (this.vehicleSlotMap.size() == this.parkingLotCapacity) {
+            for ( ParkingLotObserver observer : parkingLotObserver )
+                observer.parkingLotIsFull();
+            throw new ParkingLotException("Parking lot is full");
+        }
+        vehicleSlotMap.put(slot,vehicle);
+    }
+
+
 
     public boolean unPark(Object vehicle) {
         if (vehicle == null ) return false;
@@ -39,5 +52,19 @@ public class ParkingLotSystem {
                 observer.parkingLotIsEmpty();
         }
         return true;
+    }
+
+    public ParkingLotAttendant getParkingLotAttendant(ParkingLotAttendant attendantWithVehicle) throws ParkingLotException {
+
+        ParkingLotOwner parkingLotOwner = (ParkingLotOwner) parkingLotObserver.get(0);
+        park(parkingLotOwner.getParkingSlot(),attendantWithVehicle.getVehicle());
+        return attendantWithVehicle;
+    }
+
+    public ParkingLotAttendant getMyVehicle(ParkingLotAttendant parkingLotAttendant) throws ParkingLotException {
+        if( vehicleSlotMap.containsValue(parkingLotAttendant.getVehicle()))
+            return parkingLotAttendant;
+        throw new ParkingLotException("Such Type of Attendant Not Found");
+
     }
 }
